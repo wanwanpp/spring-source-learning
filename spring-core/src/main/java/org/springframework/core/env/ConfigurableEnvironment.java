@@ -69,6 +69,11 @@ import java.util.Map;
  * @see StandardEnvironment
  * @see org.springframework.context.ConfigurableApplicationContext#getEnvironment
  */
+
+/**
+ * 提供设置活动的和默认的配置文件以及操纵底层属性源的功能
+ * 允许通过ConfigurablePropertyResolver父接口来设置和验证所需的属性，自定义转换服务等
+ */
 public interface ConfigurableEnvironment extends Environment, ConfigurablePropertyResolver {
 
 	/**
@@ -114,9 +119,16 @@ public interface ConfigurableEnvironment extends Environment, ConfigurableProper
 	 * certain user-defined property sources have search precedence over default property
 	 * sources such as the set of system properties or the set of system environment
 	 * variables.
+     *
+     * 以可变形式返回此环境的PropertySources，允许对根据此Environment对象解析属性时应搜索
+     * 的PropertySource对象集的操作。 各种MutablePropertySources方法
+     * （如addFirst，addLast，addBefore和addAfter）允许对属性源排序进行细粒度的控制。
+     *
+     * 例如，确保某些用户定义的属性源具有超出默认属性源的搜索优先级，例如系统属性集或系统环境变量集。
+     *
 	 * @see AbstractEnvironment#customizePropertySources
 	 */
-	MutablePropertySources getPropertySources();
+	MutablePropertySources getPropertySources();    //对属性源的细粒度控制
 
 	/**
 	 * Return the value of {@link System#getenv()} if allowed by the current
@@ -166,6 +178,6 @@ public interface ConfigurableEnvironment extends Environment, ConfigurableProper
 	 * @since 3.1.2
 	 * @see org.springframework.context.support.AbstractApplicationContext#setParent
 	 */
-	void merge(ConfigurableEnvironment parent);
+	void merge(ConfigurableEnvironment parent);         //将给定的父环境的活动配置文件，默认配置文件和属性源附加到此（子）环境各自的集合中。
 
 }

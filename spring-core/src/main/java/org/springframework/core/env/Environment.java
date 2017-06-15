@@ -22,6 +22,8 @@ package org.springframework.core.env;
  * <em>properties</em>. Methods related to property access are exposed via the
  * {@link PropertyResolver} superinterface.
  *
+ * 表示当前应用程序正在运行的环境，模拟应用程序环境的两个关键方面：配置文件和属性，于属性访问相关的方法在PropertyResolver父接口中
+ *
  * <p>A <em>profile</em> is a named, logical group of bean definitions to be registered
  * with the container only if the given profile is <em>active</em>. Beans may be assigned
  * to a profile whether defined in XML or via annotations; see the spring-beans 3.1 schema
@@ -37,6 +39,10 @@ package org.springframework.core.env;
  * Maps, and so on. The role of the environment object with relation to properties is to
  * provide the user with a convenient service interface for configuring property sources
  * and resolving properties from them.
+ * 属性在几乎所有应用程序中起着重要作用，可能来自各种来源：属性文件，JVM系统属性，系统环境变量，
+ * JNDI，servlet上下文参数，ad-hoc属性对象，Maps等。
+ *
+ * environment对象与属性关系的作用是为用户提供方便的服务接口，用于配置属性源并从中解析属性。
  *
  * <p>Beans managed within an {@code ApplicationContext} may register to be {@link
  * org.springframework.context.EnvironmentAware EnvironmentAware} or {@code @Inject} the
@@ -83,7 +89,7 @@ public interface Environment extends PropertyResolver {
 	 * @see ConfigurableEnvironment#setActiveProfiles
 	 * @see AbstractEnvironment#ACTIVE_PROFILES_PROPERTY_NAME
 	 */
-	String[] getActiveProfiles();
+	String[] getActiveProfiles();     //获取环境中激活的配置
 
 	/**
 	 * Return the set of profiles to be active by default when no active profiles have
@@ -92,7 +98,7 @@ public interface Environment extends PropertyResolver {
 	 * @see ConfigurableEnvironment#setDefaultProfiles
 	 * @see AbstractEnvironment#DEFAULT_PROFILES_PROPERTY_NAME
 	 */
-	String[] getDefaultProfiles();
+	String[] getDefaultProfiles();       //获取默认配置，没有active profile时
 
 	/**
 	 * Return whether one or more of the given profiles is active or, in the case of no
@@ -103,6 +109,11 @@ public interface Environment extends PropertyResolver {
 	 * return {@code true} if profile 'p1' is active or 'p2' is not active.
 	 * @throws IllegalArgumentException if called with zero arguments
 	 * or if any profile is {@code null}, empty or whitespace-only
+     *
+     * 返回一个或多个给定的配置文件是否活动，或者在没有显式活动配置文件的情况下，是
+     * 否将一个或多个给定配置文件包含在默认配置文件集中。
+     * 如果配置文件以'！'开头逻辑被反转，即如果给定的配置文件不活动，该方法将返回true
+     * env.acceptsProfiles("p1", "!p2")   如果配置文件“p1”处于活动状态或“p2”不活动，将返回true
 	 * @see #getActiveProfiles
 	 * @see #getDefaultProfiles
 	 */

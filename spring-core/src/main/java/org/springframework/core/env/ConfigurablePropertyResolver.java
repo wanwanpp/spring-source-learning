@@ -24,6 +24,8 @@ import org.springframework.core.convert.support.ConfigurableConversionService;
  * {@link org.springframework.core.convert.ConversionService ConversionService}
  * used when converting property values from one type to another.
  *
+ * 提供用于访问和自定义将属性值从一种类型转换为另一种时使用的ConversionService的功能。
+ *
  * @author Chris Beams
  * @since 3.1
  */
@@ -57,12 +59,12 @@ public interface ConfigurablePropertyResolver extends PropertyResolver {
 	void setConversionService(ConfigurableConversionService conversionService);
 
 	/**
-	 * Set the prefix that placeholders replaced by this resolver must begin with.
+	 * Set the prefix that placeholders replaced by this resolver must begin with.     设置以此解析器替换的占位符的前缀
 	 */
 	void setPlaceholderPrefix(String placeholderPrefix);
 
 	/**
-	 * Set the suffix that placeholders replaced by this resolver must end with.
+	 * Set the suffix that placeholders replaced by this resolver must end with.         后缀
 	 */
 	void setPlaceholderSuffix(String placeholderSuffix);
 
@@ -71,7 +73,7 @@ public interface ConfigurablePropertyResolver extends PropertyResolver {
 	 * resolver and their associated default value, or {@code null} if no such
 	 * special character should be processed as a value separator.
 	 */
-	void setValueSeparator(String valueSeparator);
+	void setValueSeparator(String valueSeparator);         //分隔符
 
 	/**
 	 * Set whether to throw an exception when encountering an unresolvable placeholder
@@ -83,12 +85,19 @@ public interface ConfigurablePropertyResolver extends PropertyResolver {
 	 * the value set here to determine correct behavior when property values contain
 	 * unresolvable placeholders.
 	 * @since 3.2
-	 */
+     *
+     * 设置是否在遇到嵌套在给定属性的值中的不可解析占位符时抛出异常。 false表示不忽略，即
+     * 抛出异常。 true表示不可解析的嵌套占位符应该以未解析的$ {...}形式传递。
+     *
+     * @param ignoreUnresolvableNestedPlaceholders
+     */
 	void setIgnoreUnresolvableNestedPlaceholders(boolean ignoreUnresolvableNestedPlaceholders);
 
 	/**
 	 * Specify which properties must be present, to be verified by
 	 * {@link #validateRequiredProperties()}.
+     *
+     * 指定哪些属性必须存在，由validateRequiredProperties()验证
 	 */
 	void setRequiredProperties(String... requiredProperties);
 
@@ -98,6 +107,8 @@ public interface ConfigurablePropertyResolver extends PropertyResolver {
 	 * non-{@code null} value.
 	 * @throws MissingRequiredPropertiesException if any of the required
 	 * properties are not resolvable.
+     *
+     * 配合上面的setRequiredProperties(String... requiredProperties)方法使用，验证required properties都不为null
 	 */
 	void validateRequiredProperties() throws MissingRequiredPropertiesException;
 
